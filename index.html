@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuraPomodoro</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <canvas id="bgCanvas"></canvas>
+
+  <main class="shell">
+    <section class="app">
+      <div class="top-actions">
+        <a
+          href="https://github.com/coffee-koala"
+          class="icon-btn"
+          aria-label="Open coffee-koala GitHub"
+          title="coffee-koala on GitHub"
+          target="_blank"
+          rel="noreferrer"
+        >
+          <span class="theme-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24">
+              <path d="M9 19c-4.5 1.4-4.5-2.5-6.3-3" />
+              <path d="M15 21v-3.5c0-1 .1-1.4-.5-2 2.9-.3 6-1.4 6-6.4 0-1.4-.5-2.5-1.3-3.4.2-.4.6-1.7-.1-3.4 0 0-1.1-.3-3.5 1.3a12.3 12.3 0 0 0-6.3 0C6.6 2.1 5.5 2.4 5.5 2.4c-.7 1.7-.3 3-.1 3.4A4.8 4.8 0 0 0 4 9.2c0 5 3.1 6.1 6 6.4-.5.4-.7.9-.7 1.8V21" />
+            </svg>
+          </span>
+        </a>
+        <button id="themeToggle" class="icon-btn" aria-label="Toggle theme" title="Toggle theme">
+          <span id="themeIcon" class="theme-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="topbar">
+        <div>
+          <p class="label">FOCUS SYSTEM</p>
+          <h1>AuraPomodoro <span class="byline">by coffee-koala</span></h1>
+        </div>
+      </div>
+
+      <div class="mode-switcher">
+        <button class="mode-btn active" data-mode="focus">Focus</button>
+        <button class="mode-btn" data-mode="shortBreak">Short Break</button>
+        <button class="mode-btn" data-mode="longBreak">Long Break</button>
+      </div>
+
+      <section class="dashboard-grid">
+        <section class="timer-panel panel">
+          <div class="hero">
+            <div class="hero-head">
+              <p class="mode-text" id="modeLabel">Focus Session</p>
+              <p class="status-inline" id="statusText">Ready</p>
+            </div>
+
+            <div class="timer-stage">
+              <button id="timerDisplayBtn" class="timer-display-btn" title="Edit timer">
+                <h2 class="timer" id="timer">25:00</h2>
+              </button>
+            </div>
+
+            <div class="time-editor" id="timeEditor">
+              <div class="time-editor-fields">
+                <div class="time-editor-field">
+                  <label for="hoursInput">Hours</label>
+                  <input id="hoursInput" type="text" inputmode="numeric" maxlength="3" value="000" placeholder="000" />
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-editor-field">
+                  <label for="minutesInput">Minutes</label>
+                  <input id="minutesInput" type="text" inputmode="numeric" maxlength="2" value="25" placeholder="00" />
+                </div>
+                <span class="time-separator">:</span>
+                <div class="time-editor-field">
+                  <label for="secondsInput">Seconds</label>
+                  <input id="secondsInput" type="text" inputmode="numeric" maxlength="2" value="00" placeholder="00" />
+                </div>
+              </div>
+
+              <div class="time-editor-actions">
+                <button id="saveTimeBtn" class="small-btn primary-small">Set Time</button>
+                <button id="cancelTimeBtn" class="small-btn">Cancel</button>
+              </div>
+            </div>
+
+            <div class="progress-wrap">
+              <div class="progress-track">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+            </div>
+
+            <div class="sound-dock">
+              <label class="sound-label" for="alarmSelect">Timer End Sound</label>
+              <div class="sound-controls">
+                <div class="select-wrap">
+                  <select id="alarmSelect" class="sound-select">
+                    <option value="fahh">Fahh</option>
+                    <option value="chime">Soft Chime</option>
+                    <option value="bell">Bright Bell</option>
+                    <option value="alarmPulse">Alarm Pulse</option>
+                    <option value="digital">Digital Ping</option>
+                    <option value="beacon">Beacon Alert</option>
+                    <option value="goofy">Goofy Bounce</option>
+                    <option value="dramatic">Dramatic Sting</option>
+                    <option value="arcade">Arcade Win</option>
+                    <option value="none">Silent</option>
+                  </select>
+                </div>
+                <button id="previewSoundBtn" class="small-btn icon-control" type="button" aria-label="Preview timer end sound" title="Preview timer end sound">
+                  <span class="btn-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M5 15V9"></path>
+                      <path d="M9 18V6"></path>
+                      <path d="M13 14v-4"></path>
+                      <path d="M17 16V8"></path>
+                      <path d="M21 13v-2"></path>
+                    </svg>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button id="startBtn" class="control primary icon-control" aria-label="Start timer" title="Start timer">
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path class="icon-fill" d="M8 6.5v11l9-5.5Z"></path>
+                </svg>
+              </span>
+            </button>
+            <button id="pauseBtn" class="control icon-control" aria-label="Pause timer" title="Pause timer">
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8.5 6.5v11"></path>
+                  <path d="M15.5 6.5v11"></path>
+                </svg>
+              </span>
+            </button>
+            <button id="resetBtn" class="control icon-control" aria-label="Reset timer" title="Reset timer">
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M20 12a8 8 0 1 1-2.34-5.66"></path>
+                  <path d="M20 4v5h-5"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <p class="keyboard-hint">Press <kbd>Space</kbd> to start or pause the timer</p>
+
+          <div class="timer-foot">
+            <div class="status-box">
+              <span>Current Mode</span>
+              <strong id="modeMini">Focus</strong>
+            </div>
+            <div class="status-box">
+              <span>Pending Tasks</span>
+              <strong id="taskPendingCount">0</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="tasks-panel panel">
+          <div class="panel-head">
+            <div>
+              <p class="panel-label">Tasks</p>
+              <p class="panel-meta">Add, tick off, or delete focus items.</p>
+            </div>
+          </div>
+
+          <div class="task-input-row">
+            <input
+              id="taskInput"
+              type="text"
+              placeholder="Add a task"
+              maxlength="120"
+            />
+            <button id="addTaskBtn" class="small-btn primary-small icon-control" aria-label="Add task" title="Add task">
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 5v14"></path>
+                  <path d="M5 12h14"></path>
+                </svg>
+              </span>
+            </button>
+          </div>
+
+          <ul id="taskList" class="task-list"></ul>
+        </section>
+
+        <section class="playlist-panel panel">
+          <div class="panel-head">
+            <div>
+              <p class="panel-label">Spotify Playlist</p>
+              <p class="panel-meta">Paste a playlist link and load it below.</p>
+            </div>
+            <button id="updatePlaylistBtn" class="small-btn">Load</button>
+          </div>
+
+          <div class="playlist-input-row">
+            <input
+              id="playlistInput"
+              type="text"
+              placeholder="Paste Spotify playlist link here"
+              value=""
+            />
+          </div>
+
+          <div class="spotify-wrap">
+            <iframe
+              id="spotifyEmbed"
+              data-testid="embed-iframe"
+              src="https://open.spotify.com/embed/playlist/1u4F50HA53L3Jwxbnk9IeO?utm_source=generator&theme=0"
+              width="100%"
+              height="352"
+              frameborder="0"
+              allowfullscreen=""
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+              loading="lazy"
+            ></iframe>
+          </div>
+        </section>
+      </section>
+    </section>
+  </main>
+
+  <audio id="alarmSound" preload="auto">
+    <source src="sounds/fahh.mp3" type="audio/mpeg" />
+  </audio>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
